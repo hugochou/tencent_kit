@@ -6,20 +6,20 @@ repository: https://github.com/RxReader/tencent_kit.git
 issue_tracker: https://github.com/RxReader/tencent_kit/issues
 
 environment:
-  sdk: '>=3.0.2 <4.0.0'
-  flutter: ">=3.3.0"
+  sdk: ">=2.10.5 <3.0.0"
+  flutter: ">=1.20.2"
 
 dependencies:
   flutter:
     sdk: flutter
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface:
 
-  json_annotation: ^4.8.1
+  json_annotation:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+#  flutter_lints: ^2.0.0
 
   build_runner:
   json_serializable:

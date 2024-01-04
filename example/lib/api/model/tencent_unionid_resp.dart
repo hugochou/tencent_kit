@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'tencent_unionid_resp.g.dart';
@@ -10,24 +11,23 @@ part 'tencent_unionid_resp.g.dart';
 )
 class TencentUnionidResp {
   const TencentUnionidResp({
-    required this.error,
+    @required this.error,
     this.errorDescription,
     this.clientId,
     this.openid,
     this.unionid,
   });
 
-  factory TencentUnionidResp.fromJson(Map<String, dynamic> json) =>
-      _$TencentUnionidRespFromJson(json);
+  factory TencentUnionidResp.fromJson(Map<String, dynamic> json) => _$TencentUnionidRespFromJson(json);
 
   @JsonKey(
     defaultValue: kErrorSuccess,
   )
   final int error;
-  final String? errorDescription;
-  final String? clientId;
-  final String? openid;
-  final String? unionid;
+  final String errorDescription;
+  final String clientId;
+  final String openid;
+  final String unionid;
 
   static const int kErrorSuccess = 0;
 

@@ -17,8 +17,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({
-    super.key,
-  });
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatefulWidget {
   const Home({
-    super.key,
-  });
+    Key key,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -40,9 +40,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late final StreamSubscription<TencentResp> _respSubs;
+  StreamSubscription<TencentResp> _respSubs;
 
-  TencentLoginResp? _loginResp;
+  TencentLoginResp _loginResp;
 
   @override
   void initState() {
@@ -78,16 +78,14 @@ class _HomeState extends State<Home> {
           ListTile(
             title: Text('3.1.0 之后的版本请先获取权限'),
             onTap: () async {
-              await TencentKitPlatform.instance
-                  .setIsPermissionGranted(granted: true);
+              await TencentKitPlatform.instance.setIsPermissionGranted(granted: true);
               _showTips('授权', '已授权获取设备信息/同意隐私协议');
             },
           ),
           ListTile(
             title: Text('注册APP'),
             onTap: () async {
-              await TencentKitPlatform.instance.registerApp(
-                  appId: _kTencentAppID, universalLink: _kUniversalLink);
+              await TencentKitPlatform.instance.registerApp(appId: _kTencentAppID, universalLink: _kUniversalLink);
               _showTips('注册APP', '注册成功');
             },
           ),
@@ -110,17 +108,14 @@ class _HomeState extends State<Home> {
           ListTile(
             title: Text('获取用户信息'),
             onTap: () async {
-              if ((_loginResp?.isSuccessful ?? false) &&
-                  !(_loginResp!.isExpired ?? true)) {
-                final TencentUserInfoResp userInfo =
-                    await TencentApi.getUserInfo(
+              if ((_loginResp?.isSuccessful ?? false) && !(_loginResp.isExpired ?? true)) {
+                final TencentUserInfoResp userInfo = await TencentApi.getUserInfo(
                   appId: _kTencentAppID,
-                  openid: _loginResp!.openid!,
-                  accessToken: _loginResp!.accessToken!,
+                  openid: _loginResp.openid,
+                  accessToken: _loginResp.accessToken,
                 );
                 if (userInfo.isSuccessful) {
-                  _showTips('用户信息',
-                      '${userInfo.nickname} - ${userInfo.gender} - ${userInfo.genderType}');
+                  _showTips('用户信息', '${userInfo.nickname} - ${userInfo.gender} - ${userInfo.genderType}');
                 } else {
                   _showTips('用户信息', '${userInfo.ret} - ${userInfo.msg}');
                 }
@@ -130,17 +125,14 @@ class _HomeState extends State<Home> {
           ListTile(
             title: Text('获取UnionID'),
             onTap: () async {
-              if ((_loginResp?.isSuccessful ?? false) &&
-                  !(_loginResp!.isExpired ?? true)) {
+              if ((_loginResp?.isSuccessful ?? false) && !(_loginResp.isExpired ?? true)) {
                 final TencentUnionidResp unionid = await TencentApi.getUnionId(
-                  accessToken: _loginResp!.accessToken!,
+                  accessToken: _loginResp.accessToken,
                 );
                 if (unionid.isSuccessful) {
-                  _showTips('UnionID',
-                      '${unionid.clientId} - ${unionid.openid} - ${unionid.unionid}');
+                  _showTips('UnionID', '${unionid.clientId} - ${unionid.openid} - ${unionid.unionid}');
                 } else {
-                  _showTips('UnionID',
-                      '${unionid.error} - ${unionid.errorDescription}');
+                  _showTips('UnionID', '${unionid.error} - ${unionid.errorDescription}');
                 }
               }
             },
@@ -166,8 +158,8 @@ class _HomeState extends State<Home> {
           ListTile(
             title: Text('图片分享'),
             onTap: () async {
-              final File file = await DefaultCacheManager().getSingleFile(
-                  'https://www.baidu.com/img/bd_logo1.png?where=super');
+              final File file =
+                  await DefaultCacheManager().getSingleFile('https://www.baidu.com/img/bd_logo1.png?where=super');
               await TencentKitPlatform.instance.shareImage(
                 scene: TencentScene.kScene_QQ,
                 imageUri: Uri.file(file.path),

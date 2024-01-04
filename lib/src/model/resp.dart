@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'resp.g.dart';
 
 abstract class TencentResp {
   const TencentResp({
-    required this.ret,
+    @required this.ret,
     this.msg,
   });
 
@@ -25,7 +26,7 @@ abstract class TencentResp {
     defaultValue: kRetSuccess,
   )
   final int ret;
-  final String? msg;
+  final String msg;
 
   bool get isSuccessful => ret == kRetSuccess;
 
@@ -43,25 +44,22 @@ abstract class TencentResp {
 )
 class TencentLoginResp extends TencentResp {
   const TencentLoginResp({
-    required super.ret,
-    super.msg,
+    @required int ret,
+    String msg,
     this.openid,
     this.accessToken,
     this.expiresIn,
     this.createAt,
-  });
+  }) : super(ret: ret, msg: msg);
 
-  factory TencentLoginResp.fromJson(Map<String, dynamic> json) =>
-      _$TencentLoginRespFromJson(json);
+  factory TencentLoginResp.fromJson(Map<String, dynamic> json) => _$TencentLoginRespFromJson(json);
 
-  final String? openid;
-  final String? accessToken;
-  final int? expiresIn;
-  final int? createAt;
+  final String openid;
+  final String accessToken;
+  final int expiresIn;
+  final int createAt;
 
-  bool? get isExpired => isSuccessful
-      ? DateTime.now().millisecondsSinceEpoch - createAt! >= expiresIn! * 1000
-      : null;
+  bool get isExpired => isSuccessful ? DateTime.now().millisecondsSinceEpoch - createAt >= expiresIn * 1000 : null;
 
   @override
   Map<String, dynamic> toJson() => _$TencentLoginRespToJson(this);
@@ -73,12 +71,11 @@ class TencentLoginResp extends TencentResp {
 )
 class TencentShareMsgResp extends TencentResp {
   const TencentShareMsgResp({
-    required super.ret,
-    super.msg,
-  });
+    @required int ret,
+    String msg,
+  }) : super(ret: ret, msg: msg);
 
-  factory TencentShareMsgResp.fromJson(Map<String, dynamic> json) =>
-      _$TencentShareMsgRespFromJson(json);
+  factory TencentShareMsgResp.fromJson(Map<String, dynamic> json) => _$TencentShareMsgRespFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$TencentShareMsgRespToJson(this);
